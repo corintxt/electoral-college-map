@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>US States Map with Electoral Votes</title>
+    <style>
+      .state {
+        fill: lightgray;
+        stroke: black;
+        stroke-width: 1px;
+      }
+      .state:hover {
+        fill: darkgray;
+      }
+      .vote-circle {
+        fill: black;
+        stroke: none;
+        pointer-events: none;
+      }
+      .bounding-box {
+        fill: none;
+        stroke: red;
+        stroke-width: 1px;
+      }
+      .centroid {
+        fill: green;
+        stroke: none;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <script>
+      const width = 960;
+      const height = 600;
+      const circleRadius = 3;
+
+      const svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const projection = d3.geoAlbersUsa()
+        .scale(1000)
+        .translate([width / 2, height / 2]);
+
+      const path = d3.geoPath()
+        .projection(projection);
+
+      d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+        .then(topoData => {
+          const states = topojson.feature(topoData, topoData.objects.states);
+
+          const statesPaths = svg.selectAll(".state")
+            .data(states.features)
+            .enter()
+            .append("path")
+            .attr("class", "state")
+            .attr("d", path);
+
+          d3.json("electoral-college-votes.json")
+            .then(electoralData => {
+              states.features.forEach(state => {
+                const stateData = electoralData.find(d => d.state === state.properties.name);
+                if (stateData) {
+                  state.properties.electoral_votes = stateData.electoral_votes;
+                }
+              });
+
+              const voteCircles = svg.selectAll(".vote-circle")
+                .data(states.features)
+                .enter()
+                .append("g")
+                .attr("class", "vote-circle")
+                .attr("state-name", d => d.properties.name)
+                .attr("transform", d => `translate(${path.bounds(d)[0]})`)
+
+              // Draw bounding boxes for each state
+              voteCircles.append("rect")
+                .attr("class", "bounding-box")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", d => path.bounds(d)[1][0] - path.bounds(d)[0][0])
+                .attr("height", d => path.bounds(d)[1][1] - path.bounds(d)[0][1]);
+
+              // Draw centroids for each state
+              voteCircles.append("circle")
+                .attr("class", "centroid")
+                .attr("r", 3)
+                .attr("cx", d => path.centroid(d)[0] - path.bounds(d)[0][0])
+                .attr("cy", d => path.centroid(d)[1] - path.bounds(d)[0][1]);
+
+              voteCircles.selectAll(".vote-circle")
+                .data(d => {
+                  const votes = d.properties.electoral_votes;
+                  const bbox = path.bounds(d);
+                  const dx = bbox[1][0] - bbox[0][0];
+                  const dy = bbox[1][1] - bbox[0][1];
+                  const circleSpacing = Math.min(dx, dy) / Math.ceil(Math.sqrt(votes));
+                  const positions = [];
+
+                  let x = circleSpacing / 2;
+                  let y = circleSpacing / 2;
+                  let row = 0;
+                  let col = 0;
+
+                  for (let i = 0; i < votes; i++) {
+                    positions.push([x, y]);
+                    col++;
+                    x += circleSpacing;
+
+                    if (col === Math.ceil(Math.sqrt(votes))) {
+                      col = 0;
+                      row++;
+                      x = circleSpacing / 2;
+                      y += circleSpacing;
+                    }
+                  }
+
+                  return positions;
+                })
+                .enter()
+                .append("circle")
+                .attr("class", "vote-circle")
+                .attr("r", circleRadius)
+                .attr("cx", d => d[0])
+                .attr("cy", d => d[1]);
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>US States Map with Electoral Votes</title>
+    <style>
+      .state {
+        fill: lightgray;
+        stroke: white;
+      }
+      .state:hover {
+        fill: darkgray;
+      }
+      .state-label {
+        fill: black;
+        font-family: monospace;
+        font-size: 12px;
+        text-anchor: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <script>
+      const width = 960;
+      const height = 600;
+
+      const svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const projection = d3.geoAlbersUsa()
+        .scale(1000)
+        .translate([width / 2, height / 2]);
+
+      const path = d3.geoPath()
+        .projection(projection);
+
+      // Load the TopoJSON data and draw the map
+      d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+        .then(topoData => {
+          const states = topojson.feature(topoData, topoData.objects.states);
+
+          svg.selectAll(".state")
+            .data(states.features)
+            .enter()
+            .append("path")
+            .attr("class", "state")
+            .attr("d", path);
+
+          // Load the electoral college votes data
+          d3.json("electoral-college-votes.json")
+            .then(electoralData => {
+              // Merge the TopoJSON data with the electoral college votes data
+              states.features.forEach(state => {
+                const stateData = electoralData.find(d => d.state === state.properties.name);
+                if (stateData) {
+                  state.properties.electoral_votes = stateData.electoral_votes;
+                }
+              });
+
+              // Add text labels for electoral college votes
+              svg.selectAll(".state-label")
+                .data(states.features)
+                .enter()
+                .append("text")
+                .attr("class", "state-label")
+                .attr("x", function(d) {
+                  return path.centroid(d)[0];
+                })
+                .attr("y", function(d) {
+                  return path.centroid(d)[1];
+                })
+                .text(function(d) {
+                  return d.properties.electoral_votes;
+                });
+            });
+        });
+    </script>
+  </body>
+</html>
