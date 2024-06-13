@@ -5,12 +5,12 @@
     <title>US States Map with Electoral Votes</title>
     <style>
       body {
-        background-color: rgb(193, 233, 246);
+        background-color: rgba(218, 218, 218, 0.653);
       }
 
       .state {
-        fill: lightgray;
-        stroke: white;
+        fill: rgb(255, 255, 255);
+        stroke: rgb(213, 213, 213);
         stroke-width: 1px;
       }
 
@@ -19,7 +19,7 @@
       }
 
       .state.highlighted {
-        fill: yellow;
+        fill: rgb(241, 241, 186);
       }
 
       .vote-circle {
@@ -29,11 +29,20 @@
       }
 
       .vote-circle.highlighted {
-        fill: red;
+        fill: rgb(190, 26, 255);
       }
+
+    .state-initials {
+        font-size: 12px;
+        font-weight: bold;
+        text-anchor: middle;
+        pointer-events: none;
+}
     </style>
   </head>
   <body>
+    <button id="downloadButton">Download SVG</button>
+
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
     <script>
@@ -58,21 +67,37 @@
         .then(topoData => {
           const states = topojson.feature(topoData, topoData.objects.states);
 
+        d3.json("electoral-college-votes.json")
+        .then(electoralData => {
+            states.features.forEach(state => {
+            const stateData = electoralData.find(d => d.state === state.properties.name);
+            if (stateData) {
+                state.properties.electoral_votes = stateData.electoral_votes;
+                state.properties.postal = stateData.postal;
+            }
+            });
+
+        console.log(states)
+
           const statesPaths = svg.selectAll(".state")
             .data(states.features)
             .enter()
             .append("path")
             .attr("class", "state")
-            .attr("d", path);
+            .attr("d", path)
+            .append("title")
+            .text(d => `${d.properties.name}: ${d.properties.electoral_votes} electoral votes`);
 
-          d3.json("electoral-college-votes.json")
-            .then(electoralData => {
-              states.features.forEach(state => {
-                const stateData = electoralData.find(d => d.state === state.properties.name);
-                if (stateData) {
-                  state.properties.electoral_votes = stateData.electoral_votes;
-                }
-              });
+            // Add state initials
+            svg.selectAll(".state-initials")
+            .data(states.features)
+            .enter()
+            .append("text")
+            .attr("class", "state-initials")
+            .attr("x", d => path.centroid(d)[0])
+            .attr("y", d => path.centroid(d)[1])
+            .text(d => `${d.properties.postal}`);
+            // .text("BB")
 
               const voteCircles = svg.selectAll(".vote-circle")
                 .data(states.features)
@@ -133,6 +158,48 @@
 
             });
         });
+
+        function downloadSVG() {
+            const svgElement = document.querySelector("svg");
+
+            // Create a deep clone of the SVG element
+            const clonedSvgElement = svgElement.cloneNode(true);
+
+            // Remove the tooltip element from the cloned SVG
+            const tooltipElement = clonedSvgElement.querySelector(".tooltip");
+            if (tooltipElement) {
+                tooltipElement.remove();
+            }
+
+            // Set the fill and stroke colors on the state paths and vote circles
+            const statePaths = clonedSvgElement.querySelectorAll(".state");
+            statePaths.forEach(path => {
+                const fillColor = 'lightgrey';
+                const strokeColor = 'darkgrey';
+                path.setAttribute("fill", fillColor);
+                // path.setAttribute("stroke", strokeColor);
+            });
+
+            const voteCircles = clonedSvgElement.querySelectorAll(".vote-circle circle");
+            voteCircles.forEach(circle => {
+                const fillColor = 'black';
+                circle.setAttribute("fill", fillColor);
+            });
+
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(clonedSvgElement);
+            const blob = new Blob([svgString], { type: "image/svg+xml" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "us-states-map.svg";
+            link.click();
+
+            URL.revokeObjectURL(url);
+            }
+        const downloadButton = document.getElementById("downloadButton");
+        downloadButton.addEventListener("click", downloadSVG);
     </script>
   </body>
 </html>
