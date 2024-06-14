@@ -6,6 +6,8 @@
     <style>
       body {
         background-color: rgba(218, 218, 218, 0.653);
+        display: flex;
+        align-items: flex-start;
       }
 
       .state {
@@ -41,13 +43,57 @@
         pointer-events: none;
       }
 
+      #stateList {
+      width: 200px;
+      padding-right: 20px;
+      box-sizing: border-box;
+    }
+
+    #mapContainer {
+      flex: 1;
+    }
+
+    .state-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: 8px;
+    }
+
+    .radio-container {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    .radio-container label {
+      margin-left: 5px;
+      margin-right: 10px;
+      font-size: 8px;
+    }
+
+    .radio-container input[type="radio"] {
+      transform: scale(0.8);
+    }
+
+      #stateList {
+        width: 150px;
+        padding-right: 10px;
+        box-sizing: border-box;
+      }
+
       #downloadButton {
         display: block;
       }
     </style>
   </head>
   <body>
-    <button id="downloadButton">Download SVG</button>
+    <div style="display: flex;">
+      <div id="stateList"></div>
+      <div id="mapContainer">
+        <button id="downloadButton">Download SVG</button>
+      </div>
+    </div>
 
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
@@ -57,7 +103,9 @@
       const circleRadius = 2;
       const circlesPerRow = 4;
 
-      const svg = d3.select("body")
+      const mapContainer = d3.select("#mapContainer");
+
+      const svg = mapContainer
         .append("svg")
         .attr("width", width)
         .attr("height", height);
@@ -163,7 +211,39 @@
                         });
 
             });
+
+           // Generate the state list with radio buttons
+          const stateList = d3.select("#stateList");
+
+          states.features.forEach(state => {
+            const stateName = state.properties.name;
+            const stateRow = stateList.append("div").attr("class", "state-row");
+            
+            const radioContainer = stateRow.append("div").attr("class", "radio-container");
+            
+            radioContainer.append("input")
+              .attr("type", "radio")
+              .attr("id", `${stateName}-d`)
+              .attr("name", stateName);
+            
+            radioContainer.append("label")
+              .attr("for", `${stateName}-d`)
+              .text("D");
+            
+            radioContainer.append("input")
+              .attr("type", "radio")
+              .attr("id", `${stateName}-r`)
+              .attr("name", stateName);
+            
+            radioContainer.append("label")
+              .attr("for", `${stateName}-r`)
+              .text("R");
+            
+            stateRow.append("span").text(stateName);
+          });
         });
+
+   
 
         function downloadSVG() {
             const svgElement = document.querySelector("svg");
