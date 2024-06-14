@@ -25,7 +25,7 @@
       }
 
       .vote-circle {
-        fill: rgb(132, 24, 190);
+        fill: rgb(0, 0, 0);
         opacity: .7;
         stroke: none;
         pointer-events: none;
@@ -58,16 +58,16 @@
       align-items: center;
       margin-bottom: 5px;
       font-size: 8px;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .radio-container {
       display: flex;
       align-items: center;
-      margin-right: 10px;
     }
 
     .radio-container label {
-      margin-left: 5px;
+      /* margin-left: 5px; */
       margin-right: 10px;
       font-size: 8px;
     }
@@ -88,10 +88,18 @@
     </style>
   </head>
   <body>
+    <!-- <div style="display: flex;">
+      <div id="stateList"></div>
+      <div id="mapContainer">
+        <button id="downloadButton">Download SVG</button>
+      </div>
+    </div> -->
+
     <div style="display: flex;">
       <div id="stateList"></div>
       <div id="mapContainer">
         <button id="downloadButton">Download SVG</button>
+        <div id="barChart"></div>
       </div>
     </div>
 
@@ -211,8 +219,7 @@
                         });
 
             });
-
-           // Generate the state list with radio buttons
+          // Generate the state list with radio buttons
           const stateList = d3.select("#stateList");
 
           states.features.forEach(state => {
@@ -224,7 +231,12 @@
             radioContainer.append("input")
               .attr("type", "radio")
               .attr("id", `${stateName}-d`)
-              .attr("name", stateName);
+              .attr("name", stateName)
+              .on("change", function() {
+                if (this.checked) {
+                  updateStateColor(stateName, "#467bf7");
+                }
+              });
             
             radioContainer.append("label")
               .attr("for", `${stateName}-d`)
@@ -233,7 +245,12 @@
             radioContainer.append("input")
               .attr("type", "radio")
               .attr("id", `${stateName}-r`)
-              .attr("name", stateName);
+              .attr("name", stateName)
+              .on("change", function() {
+                if (this.checked) {
+                  updateStateColor(stateName, "#ff7575");
+                }
+              });
             
             radioContainer.append("label")
               .attr("for", `${stateName}-r`)
@@ -241,9 +258,86 @@
             
             stateRow.append("span").text(stateName);
           });
-        });
 
-   
+          const barChartWidth = 400;
+        const barChartHeight = 50;
+        const barChartMargin = { top: 10, right: 10, bottom: 10, left: 10 };
+
+        const barChart = d3.select("#barChart")
+          .append("svg")
+          .attr("width", barChartWidth)
+          .attr("height", barChartHeight);
+
+        const updateBarChart = () => {
+          const dVotes = d3.sum(states.features, d => {
+            const radio = d3.select(`#${d.properties.name}-d`).node();
+            return radio && radio.checked ? d.properties.electoral_votes : 0;
+          });
+
+          const rVotes = d3.sum(states.features, d => {
+            const radio = d3.select(`#${d.properties.name}-r`).node();
+            return radio && radio.checked ? d.properties.electoral_votes : 0;
+          });
+
+          const barChartData = [
+            { party: "D", votes: dVotes },
+            { party: "R", votes: rVotes }
+          ];
+
+          const xScale = d3.scaleLinear()
+            .domain([0, d3.max(barChartData, d => d.votes)])
+            .range([barChartMargin.left, barChartWidth - barChartMargin.right]);
+
+          const barGroups = barChart.selectAll(".bar-group")
+            .data(barChartData);
+
+          barGroups.enter()
+            .append("g")
+            .attr("class", "bar-group")
+            .merge(barGroups)
+            .attr("transform", (d, i) => `translate(0, ${i * barChartHeight / 2})`);
+
+          barGroups.selectAll("rect")
+            .data(d => [d])
+            .enter()
+            .append("rect")
+            .merge(barGroups.selectAll("rect"))
+            .attr("width", d => xScale(d.votes) - barChartMargin.left)
+            .attr("height", barChartHeight / 2 - barChartMargin.top - barChartMargin.bottom)
+            .attr("fill", d => d.party === "D" ? "blue" : "red");
+
+          barGroups.selectAll("text")
+            .data(d => [d])
+            .enter()
+            .append("text")
+            .merge(barGroups.selectAll("text"))
+            .attr("x", barChartMargin.left - 5)
+            .attr("y", barChartHeight / 4)
+            .attr("text-anchor", "end")
+            .attr("alignment-baseline", "middle")
+            .text(d => d.party);
+
+            barGroups.selectAll("text.vote-count")
+            .data(d => [d])
+            .enter()
+            .append("text")
+            .attr("class", "vote-count")
+            .merge(barGroups.selectAll("text.vote-count"))
+            .attr("x", d => xScale(d.votes) + 5)
+            .attr("y", barChartHeight / 4)
+            .attr("alignment-baseline", "middle")
+            .text(d => d.votes);
+        };
+
+        // Update the updateStateColor function to call updateBarChart
+        function updateStateColor(stateName, color) {
+          svg.selectAll(".state")
+            .filter(d => d.properties.name === stateName)
+            .style("fill", color);
+
+          updateBarChart();
+        }
+        });
 
         function downloadSVG() {
             const svgElement = document.querySelector("svg");
