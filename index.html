@@ -10,6 +10,10 @@
         align-items: flex-start;
       }
 
+      text {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
       .state {
         fill: rgb(255, 255, 255);
         stroke: rgb(213, 213, 213);
@@ -221,6 +225,8 @@
             });
           // Generate the state list with radio buttons
           const stateList = d3.select("#stateList");
+          const demColor = "#467bf7"
+          const repColor = "#ff7575"
 
           states.features.forEach(state => {
             const stateName = state.properties.name;
@@ -234,7 +240,7 @@
               .attr("name", stateName)
               .on("change", function() {
                 if (this.checked) {
-                  updateStateColor(stateName, "#467bf7");
+                  updateStateColor(stateName, demColor);
                 }
               });
             
@@ -248,7 +254,7 @@
               .attr("name", stateName)
               .on("change", function() {
                 if (this.checked) {
-                  updateStateColor(stateName, "#ff7575");
+                  updateStateColor(stateName, repColor);
                 }
               });
             
@@ -259,14 +265,16 @@
             stateRow.append("span").text(stateName);
           });
 
-          const barChartWidth = 400;
-        const barChartHeight = 50;
-        const barChartMargin = { top: 10, right: 10, bottom: 10, left: 10 };
+          const barChartWidth = 500;
+          const barChartHeight = 60;
+          const barChartMargin = { top: 20, right: 20, bottom: 20, left: 60 };
 
-        const barChart = d3.select("#barChart")
-          .append("svg")
-          .attr("width", barChartWidth)
-          .attr("height", barChartHeight);
+          const barChart = d3.select("#barChart")
+            .append("svg")
+            .attr("width", barChartWidth)
+            .attr("height", barChartHeight)
+            .append("g")
+            .attr("transform", `translate(${barChartMargin.left}, ${barChartMargin.top})`);
 
         const updateBarChart = () => {
           const dVotes = d3.sum(states.features, d => {
@@ -285,49 +293,61 @@
           ];
 
           const xScale = d3.scaleLinear()
-            .domain([0, d3.max(barChartData, d => d.votes)])
-            .range([barChartMargin.left, barChartWidth - barChartMargin.right]);
+          .domain([0, d3.max(barChartData, d => d.votes)])
+          .range([0, barChartWidth - barChartMargin.left - barChartMargin.right]);
 
-          const barGroups = barChart.selectAll(".bar-group")
-            .data(barChartData);
+        const yScale = d3.scaleBand()
+          .domain(barChartData.map(d => d.party))
+          .range([0, barChartHeight - barChartMargin.top - barChartMargin.bottom])
+          .padding(0.2);
 
-          barGroups.enter()
-            .append("g")
-            .attr("class", "bar-group")
-            .merge(barGroups)
-            .attr("transform", (d, i) => `translate(0, ${i * barChartHeight / 2})`);
+        const barGroups = barChart.selectAll(".bar-group")
+          .data(barChartData);
 
-          barGroups.selectAll("rect")
-            .data(d => [d])
-            .enter()
-            .append("rect")
-            .merge(barGroups.selectAll("rect"))
-            .attr("width", d => xScale(d.votes) - barChartMargin.left)
-            .attr("height", barChartHeight / 2 - barChartMargin.top - barChartMargin.bottom)
-            .attr("fill", d => d.party === "D" ? "blue" : "red");
+        barGroups.enter()
+          .append("g")
+          .attr("class", "bar-group")
+          .merge(barGroups)
+          .attr("transform", d => `translate(0, ${yScale(d.party)})`);
 
-          barGroups.selectAll("text")
-            .data(d => [d])
-            .enter()
-            .append("text")
-            .merge(barGroups.selectAll("text"))
-            .attr("x", barChartMargin.left - 5)
-            .attr("y", barChartHeight / 4)
-            .attr("text-anchor", "end")
-            .attr("alignment-baseline", "middle")
-            .text(d => d.party);
+        barGroups.selectAll("rect")
+          .data(d => [d])
+          .enter()
+          .append("rect")
+          .merge(barGroups.selectAll("rect"))
+          .attr("width", d => xScale(d.votes))
+          .attr("height", yScale.bandwidth())
+          .attr("fill", d => d.party === "D" ? demColor : repColor)
+          .attr("rx", 4)
+          .attr("ry", 4);
 
-            barGroups.selectAll("text.vote-count")
-            .data(d => [d])
-            .enter()
-            .append("text")
-            .attr("class", "vote-count")
-            .merge(barGroups.selectAll("text.vote-count"))
-            .attr("x", d => xScale(d.votes) + 5)
-            .attr("y", barChartHeight / 4)
-            .attr("alignment-baseline", "middle")
-            .text(d => d.votes);
-        };
+        barGroups.selectAll("text.party-label")
+          .data(d => [d])
+          .enter()
+          .append("text")
+          .attr("class", "party-label")
+          .merge(barGroups.selectAll("text.party-label"))
+          .attr("x", -10)
+          .attr("y", yScale.bandwidth() / 2)
+          .attr("text-anchor", "end")
+          .attr("alignment-baseline", "middle")
+          .style("font-size", "12px")
+          .text(d => d.party);
+
+        barGroups.selectAll("text.vote-count")
+          .data(d => [d])
+          .enter()
+          .append("text")
+          .attr("class", "vote-count")
+          .merge(barGroups.selectAll("text.vote-count"))
+          .attr("x", d => xScale(d.votes) - 10)
+          .attr("y", yScale.bandwidth() / 2)
+          .attr("text-anchor", "end")
+          .attr("alignment-baseline", "middle")
+          .style("font-size", "12px")
+          .text(d => d.votes);
+      };
+      
 
         // Update the updateStateColor function to call updateBarChart
         function updateStateColor(stateName, color) {
