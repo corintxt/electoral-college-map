@@ -1,257 +1,257 @@
 [
-    {
-      "state": "Alabama",
-      "postal": "AL",
-      "electoral_votes": 9
-    },
-    {
-      "state": "Alaska",
-      "postal": "AK",
-      "electoral_votes": 3
-    },
-    {
-      "state": "Arizona",
-      "postal": "AZ",
-      "electoral_votes": 11
-    },
-    {
-      "state": "Arkansas",
-      "postal": "AR",
-      "electoral_votes": 6
-    },
-    {
-      "state": "California",
-      "postal": "CA",
-      "electoral_votes": 54
-    },
-    {
-      "state": "Colorado",
-      "postal": "CO",
-      "electoral_votes": 10
-    },
-    {
-      "state": "Connecticut",
-      "postal": "CT",
-      "electoral_votes": 7
-    },
-    {
-      "state": "Delaware",
-      "postal": "DE",
-      "electoral_votes": 3
-    },
-    {
-      "state": "District of Columbia",
-      "postal": "DC",
-      "electoral_votes": 3
-    },
-    {
-      "state": "Florida",
-      "postal": "FL",
-      "electoral_votes": 30
-    },
-    {
-      "state": "Georgia",
-      "postal": "GA",
-      "electoral_votes": 16
-    },
-    {
-      "state": "Hawaii",
-      "postal": "HI",
-      "electoral_votes": 4
-    },
-    {
-      "state": "Idaho",
-      "postal": "ID",
-      "electoral_votes": 4
-    },
-    {
-      "state": "Illinois",
-      "postal": "IL",
-      "electoral_votes": 19
-    },
-    {
-      "state": "Indiana",
-      "postal": "IN",
-      "electoral_votes": 11
-    },
-    {
-      "state": "Iowa",
-      "postal": "IA",
-      "electoral_votes": 6
-    },
-    {
-      "state": "Kansas",
-      "postal": "KS",
-      "electoral_votes": 6
-    },
-    {
-      "state": "Kentucky",
-      "postal": "KY",
-      "electoral_votes": 8
-    },
-    {
-      "state": "Louisiana",
-      "postal": "LA",
-      "electoral_votes": 8
-    },
-    {
-      "state": "Maine",
-      "postal": "ME",
-      "electoral_votes": 4
-    },
-    {
-      "state": "Maryland",
-      "postal": "MD",
-      "electoral_votes": 10
-    },
-    {
-      "state": "Massachusetts",
-      "postal": "MA",
-      "electoral_votes": 11
-    },
-    {
-      "state": "Michigan",
-      "postal": "MI",
-      "electoral_votes": 15
-    },
-    {
-      "state": "Minnesota",
-      "postal": "MN",
-      "electoral_votes": 10
-    },
-    {
-      "state": "Mississippi",
-      "postal": "MS",
-      "electoral_votes": 6
-    },
-    {
-      "state": "Missouri",
-      "postal": "MO",
-      "electoral_votes": 10
-    },
-    {
-      "state": "Montana",
-      "postal": "MT",
-      "electoral_votes": 4
-    },
-    {
-      "state": "Nebraska",
-      "postal": "NE",
-      "electoral_votes": 5
-    },
-    {
-      "state": "Nevada",
-      "postal": "NV",
-      "electoral_votes": 6
-    },
-    {
-      "state": "New Hampshire",
-      "postal": "NH",
-      "electoral_votes": 4
-    },
-    {
-      "state": "New Jersey",
-      "postal": "NJ",
-      "electoral_votes": 14
-    },
-    {
-      "state": "New Mexico",
-      "postal": "NM",
-      "electoral_votes": 5
-    },
-    {
-      "state": "New York",
-      "postal": "NY",
-      "electoral_votes": 28
-    },
-    {
-      "state": "North Carolina",
-      "postal": "NC",
-      "electoral_votes": 16
-    },
-    {
-      "state": "North Dakota",
-      "postal": "ND",
-      "electoral_votes": 3
-    },
-    {
-      "state": "Ohio",
-      "postal": "OH",
-      "electoral_votes": 17
-    },
-    {
-      "state": "Oklahoma",
-      "postal": "OK",
-      "electoral_votes": 7
-    },
-    {
-      "state": "Oregon",
-      "postal": "OR",
-      "electoral_votes": 8
-    },
-    {
-      "state": "Pennsylvania",
-      "postal": "PA",
-      "electoral_votes": 19
-    },
-    {
-      "state": "Rhode Island",
-      "postal": "RI",
-      "electoral_votes": 4
-    },
-    {
-      "state": "South Carolina",
-      "postal": "SC",
-      "electoral_votes": 9
-    },
-    {
-      "state": "South Dakota",
-      "postal": "SD",
-      "electoral_votes": 3
-    },
-    {
-      "state": "Tennessee",
-      "postal": "TN",
-      "electoral_votes": 11
-    },
-    {
-      "state": "Texas",
-      "postal": "TX",
-      "electoral_votes": 40
-    },
-    {
-      "state": "Utah",
-      "postal": "UT",
-      "electoral_votes": 6
-    },
-    {
-      "state": "Vermont",
-      "postal": "VT",
-      "electoral_votes": 3
-    },
-    {
-      "state": "Virginia",
-      "postal": "VA",
-      "electoral_votes": 13
-    },
-    {
-      "state": "Washington",
-      "postal": "WA",
-      "electoral_votes": 12
-    },
-    {
-      "state": "West Virginia",
-      "postal": "WV",
-      "electoral_votes": 4
-    },
-    {
-      "state": "Wisconsin",
-      "postal": "WI",
-      "electoral_votes": 10
-    },
-    {
-      "state": "Wyoming",
-      "postal": "WY",
-      "electoral_votes": 3
-    }
-  ]
+  {
+    "state": "Alabama",
+    "postal": "AL",
+    "electoral_votes": 9
+  },
+  {
+    "state": "Alaska",
+    "postal": "AK",
+    "electoral_votes": 3
+  },
+  {
+    "state": "Arizona",
+    "postal": "AZ",
+    "electoral_votes": 11
+  },
+  {
+    "state": "Arkansas",
+    "postal": "AR",
+    "electoral_votes": 6
+  },
+  {
+    "state": "California",
+    "postal": "CA",
+    "electoral_votes": 54
+  },
+  {
+    "state": "Colorado",
+    "postal": "CO",
+    "electoral_votes": 10
+  },
+  {
+    "state": "Connecticut",
+    "postal": "CT",
+    "electoral_votes": 7
+  },
+  {
+    "state": "Delaware",
+    "postal": "DE",
+    "electoral_votes": 3
+  },
+  {
+    "state": "District of Columbia",
+    "postal": "DC",
+    "electoral_votes": 3
+  },
+  {
+    "state": "Florida",
+    "postal": "FL",
+    "electoral_votes": 30
+  },
+  {
+    "state": "Georgia",
+    "postal": "GA",
+    "electoral_votes": 16
+  },
+  {
+    "state": "Hawaii",
+    "postal": "HI",
+    "electoral_votes": 4
+  },
+  {
+    "state": "Idaho",
+    "postal": "ID",
+    "electoral_votes": 4
+  },
+  {
+    "state": "Illinois",
+    "postal": "IL",
+    "electoral_votes": 19
+  },
+  {
+    "state": "Indiana",
+    "postal": "IN",
+    "electoral_votes": 11
+  },
+  {
+    "state": "Iowa",
+    "postal": "IA",
+    "electoral_votes": 6
+  },
+  {
+    "state": "Kansas",
+    "postal": "KS",
+    "electoral_votes": 6
+  },
+  {
+    "state": "Kentucky",
+    "postal": "KY",
+    "electoral_votes": 8
+  },
+  {
+    "state": "Louisiana",
+    "postal": "LA",
+    "electoral_votes": 8
+  },
+  {
+    "state": "Maine",
+    "postal": "ME",
+    "electoral_votes": 4
+  },
+  {
+    "state": "Maryland",
+    "postal": "MD",
+    "electoral_votes": 10
+  },
+  {
+    "state": "Massachusetts",
+    "postal": "MA",
+    "electoral_votes": 11
+  },
+  {
+    "state": "Michigan",
+    "postal": "MI",
+    "electoral_votes": 15
+  },
+  {
+    "state": "Minnesota",
+    "postal": "MN",
+    "electoral_votes": 10
+  },
+  {
+    "state": "Mississippi",
+    "postal": "MS",
+    "electoral_votes": 6
+  },
+  {
+    "state": "Missouri",
+    "postal": "MO",
+    "electoral_votes": 10
+  },
+  {
+    "state": "Montana",
+    "postal": "MT",
+    "electoral_votes": 4
+  },
+  {
+    "state": "Nebraska",
+    "postal": "NE",
+    "electoral_votes": 5
+  },
+  {
+    "state": "Nevada",
+    "postal": "NV",
+    "electoral_votes": 6
+  },
+  {
+    "state": "New Hampshire",
+    "postal": "NH",
+    "electoral_votes": 4
+  },
+  {
+    "state": "New Jersey",
+    "postal": "NJ",
+    "electoral_votes": 14
+  },
+  {
+    "state": "New Mexico",
+    "postal": "NM",
+    "electoral_votes": 5
+  },
+  {
+    "state": "New York",
+    "postal": "NY",
+    "electoral_votes": 28
+  },
+  {
+    "state": "North Carolina",
+    "postal": "NC",
+    "electoral_votes": 16
+  },
+  {
+    "state": "North Dakota",
+    "postal": "ND",
+    "electoral_votes": 3
+  },
+  {
+    "state": "Ohio",
+    "postal": "OH",
+    "electoral_votes": 17
+  },
+  {
+    "state": "Oklahoma",
+    "postal": "OK",
+    "electoral_votes": 7
+  },
+  {
+    "state": "Oregon",
+    "postal": "OR",
+    "electoral_votes": 8
+  },
+  {
+    "state": "Pennsylvania",
+    "postal": "PA",
+    "electoral_votes": 19
+  },
+  {
+    "state": "Rhode Island",
+    "postal": "RI",
+    "electoral_votes": 4
+  },
+  {
+    "state": "South Carolina",
+    "postal": "SC",
+    "electoral_votes": 9
+  },
+  {
+    "state": "South Dakota",
+    "postal": "SD",
+    "electoral_votes": 3
+  },
+  {
+    "state": "Tennessee",
+    "postal": "TN",
+    "electoral_votes": 11
+  },
+  {
+    "state": "Texas",
+    "postal": "TX",
+    "electoral_votes": 40
+  },
+  {
+    "state": "Utah",
+    "postal": "UT",
+    "electoral_votes": 6
+  },
+  {
+    "state": "Vermont",
+    "postal": "VT",
+    "electoral_votes": 3
+  },
+  {
+    "state": "Virginia",
+    "postal": "VA",
+    "electoral_votes": 13
+  },
+  {
+    "state": "Washington",
+    "postal": "WA",
+    "electoral_votes": 12
+  },
+  {
+    "state": "West Virginia",
+    "postal": "WV",
+    "electoral_votes": 4
+  },
+  {
+    "state": "Wisconsin",
+    "postal": "WI",
+    "electoral_votes": 10
+  },
+  {
+    "state": "Wyoming",
+    "postal": "WY",
+    "electoral_votes": 3
+  }
+]

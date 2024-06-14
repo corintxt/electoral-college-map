@@ -15,7 +15,7 @@
       }
 
       .state:hover {
-        fill: darkgray;
+        fill: rgb(254, 251, 184);
       }
 
       .state.highlighted {
@@ -23,7 +23,8 @@
       }
 
       .vote-circle {
-        fill: black;
+        fill: rgb(132, 24, 190);
+        opacity: .7;
         stroke: none;
         pointer-events: none;
       }
@@ -33,11 +34,16 @@
       }
 
     .state-initials {
-        font-size: 12px;
+        font-size: 10px;
+        font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
-        text-anchor: middle;
+        text-anchor: bottom;
         pointer-events: none;
-}
+      }
+
+      #downloadButton {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -48,7 +54,7 @@
     <script>
       const width = 960;
       const height = 600;
-      const circleRadius = 2.5;
+      const circleRadius = 2;
       const circlesPerRow = 4;
 
       const svg = d3.select("body")
@@ -111,7 +117,7 @@
                 .data(d => {
                   const votes = d.properties.electoral_votes;
                   const positions = [];
-                  const circleSpacing = circleRadius * 4;
+                  const circleSpacing = circleRadius * 2.5;
                   let x = -circleSpacing * 2;
                   let y = -circleSpacing * 2;
                   let row = 0;
