@@ -171,7 +171,7 @@
                 state.properties.electoral_votes = stateData.electoral_votes;
                 state.properties.postal = stateData.postal;
             }
-            });
+        });
 
         // console.log(filteredStates)
 
@@ -255,24 +255,30 @@
 
             });
 
-          // Sort the states alphabetically by name
-          const sortedStates = filteredStates.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
+
 
           // Generate the state list with radio buttons
           const stateList = d3.select("#stateList");
           const demColor = "#467bf7"
           const repColor = "#ff7575"
 
-          sortedStates.forEach(state => {
+          // Sort the states alphabetically by name
+          // const sortedStates = filteredStates.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
+
+          // console.log(sortedStates)
+
+          filteredStates.forEach(state => {
+            console.log(state.properties) //error here somewhere - it can't read property other than name
             const stateName = state.properties.name;
+            const postal = state.properties.postal;
             const stateRow = stateList.append("div").attr("class", "state-row");
-            
+
             const radioContainer = stateRow.append("div").attr("class", "radio-container");
             
             radioContainer.append("input")
               .attr("type", "radio")
-              .attr("id", `${stateName}-d`)
-              .attr("name", stateName)
+              .attr("id", `${postal}-d`)
+              .attr("name", postal) //try keeping name as label, but ID is postal?
               .on("change", function() {
                 if (this.checked) {
                   updateStateColor(stateName, demColor);
@@ -280,13 +286,13 @@
               });
             
             radioContainer.append("label")
-              .attr("for", `${stateName}-d`)
+              .attr("for", `${postal}-d`) 
               .text("D");
             
             radioContainer.append("input")
               .attr("type", "radio")
-              .attr("id", `${stateName}-r`)
-              .attr("name", stateName)
+              .attr("name", postal)
+              .attr("id", `${postal}-r`) 
               .on("change", function() {
                 if (this.checked) {
                   updateStateColor(stateName, repColor);
@@ -294,7 +300,7 @@
               });
             
             radioContainer.append("label")
-              .attr("for", `${stateName}-r`)
+              .attr("for", `${postal}-r`)
               .text("R");
             
             stateRow.append("span").text(stateName);
@@ -311,16 +317,18 @@
             .append("g")
             .attr("transform", `translate(${barChartMargin.left}, ${barChartMargin.top})`);
 
-        const updateBarChart = () => {
-          const dVotes = d3.sum(states.features, d => {
-            const radio = d3.select(`#${d.properties.name}-d`).node();
-            return radio && radio.checked ? d.properties.electoral_votes : 0;
-          });
+            const updateBarChart = () => {
+              const dVotes = d3.sum(filteredStates, d => {
+                const statePostal = d.properties.postal;
+                const radio = d3.select(`#${statePostal}-d`).node();
+                return radio && radio.checked ? d.properties.electoral_votes : 0;
+              });
 
-          const rVotes = d3.sum(states.features, d => {
-            const radio = d3.select(`#${d.properties.name}-r`).node();
-            return radio && radio.checked ? d.properties.electoral_votes : 0;
-          });
+              const rVotes = d3.sum(filteredStates, d => {
+                const statePostal = d.properties.postal;
+                const radio = d3.select(`#${statePostal}-r`).node();
+                return radio && radio.checked ? d.properties.electoral_votes : 0;
+              });
 
           const barChartData = [
             { party: "D", votes: dVotes },
