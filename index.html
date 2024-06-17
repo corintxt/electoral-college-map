@@ -157,9 +157,15 @@
         .then(topoData => {
           const states = topojson.feature(topoData, topoData.objects.states);
 
+          // Filter out U.S. territories
+        const filteredStates = states.features.filter(state => {
+          const stateName = state.properties.name;
+          return stateName !== 'Puerto Rico' && stateName !== 'Guam' && stateName !== 'United States Virgin Islands' && stateName !== 'American Samoa' && stateName !== 'Commonwealth of the Northern Mariana Islands';
+        });
+
         d3.json("electoral-college-votes.json")
         .then(electoralData => {
-            states.features.forEach(state => {
+            filteredStates.forEach(state => {
             const stateData = electoralData.find(d => d.state === state.properties.name);
             if (stateData) {
                 state.properties.electoral_votes = stateData.electoral_votes;
@@ -167,7 +173,7 @@
             }
             });
 
-        console.log(states)
+        // console.log(filteredStates)
 
           const statesPaths = svg.selectAll(".state")
             .data(states.features)
@@ -250,7 +256,7 @@
             });
 
           // Sort the states alphabetically by name
-          const sortedStates = states.features.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
+          const sortedStates = filteredStates.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
 
           // Generate the state list with radio buttons
           const stateList = d3.select("#stateList");
