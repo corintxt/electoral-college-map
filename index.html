@@ -92,18 +92,16 @@
     </style>
   </head>
   <body>
-    <!-- <div style="display: flex;">
-      <div id="stateList"></div>
-      <div id="mapContainer">
-        <button id="downloadButton">Download SVG</button>
-      </div>
-    </div> -->
-    
     <div style="display: flex;">
       <div id="stateList"></div>
       <div id="mapContainer">
-        <button id="downloadButton">Download SVG</button>
+        <div id="buttonContainer">
+          <button id="downloadMapButton">Download Map</button>
+          <button id="downloadChartButton">Download Chart</button>
+        </div>
         <div id="barChart"></div>
+        <div id="map"></div>
+        <!-- <svg width="960" height="600"></svg> -->
       </div>
     </div>
 
@@ -115,7 +113,7 @@
       const circleRadius = 2;
       const circlesPerRow = 4;
 
-      const mapContainer = d3.select("#mapContainer");
+      const mapContainer = d3.select("#map");
 
       const svg = mapContainer
         .append("svg")
@@ -150,6 +148,7 @@
             .enter()
             .append("path")
             .attr("class", "state")
+            .attr("fill", 'white') //make explicit for download
             .attr("d", path)
             .append("title")
             .text(d => `${d.properties.name}: ${d.properties.electoral_votes} electoral votes`);
@@ -359,8 +358,8 @@
         }
         });
 
-        function downloadSVG() {
-            const svgElement = document.querySelector("svg");
+        function downloadMapSVG() {
+            const svgElement = document.querySelector("#map svg");
 
             // Create a deep clone of the SVG element
             const clonedSvgElement = svgElement.cloneNode(true);
@@ -368,22 +367,22 @@
             // Remove the tooltip element from the cloned SVG
             const tooltipElement = clonedSvgElement.querySelector(".tooltip");
             if (tooltipElement) {
-                tooltipElement.remove();
+              tooltipElement.remove();
             }
 
             // Set the fill and stroke colors on the state paths and vote circles
             const statePaths = clonedSvgElement.querySelectorAll(".state");
             statePaths.forEach(path => {
-                const fillColor = 'lightgrey';
-                const strokeColor = 'darkgrey';
-                path.setAttribute("fill", fillColor);
-                // path.setAttribute("stroke", strokeColor);
+              const fillColor = path.getAttribute("fill");
+              const strokeColor = 'darkgrey';
+              path.setAttribute("fill", fillColor);
+              path.setAttribute("stroke", strokeColor);
             });
 
             const voteCircles = clonedSvgElement.querySelectorAll(".vote-circle circle");
             voteCircles.forEach(circle => {
-                const fillColor = 'black';
-                circle.setAttribute("fill", fillColor);
+              const fillColor = circle.getAttribute("fill");
+              circle.setAttribute("fill", fillColor);
             });
 
             const serializer = new XMLSerializer();
@@ -397,9 +396,32 @@
             link.click();
 
             URL.revokeObjectURL(url);
-            }
-        const downloadButton = document.getElementById("downloadButton");
-        downloadButton.addEventListener("click", downloadSVG);
+          }
+
+      function downloadChartSVG() {
+        const svgElement = document.querySelector("#barChart svg");
+
+        // Create a deep clone of the SVG element
+        const clonedSvgElement = svgElement.cloneNode(true);
+
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(clonedSvgElement);
+        const blob = new Blob([svgString], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "bar-chart.svg";
+        link.click();
+
+        URL.revokeObjectURL(url);
+      }
+
+      const downloadMapButton = document.getElementById("downloadMapButton");
+      downloadMapButton.addEventListener("click", downloadMapSVG);
+
+      const downloadChartButton = document.getElementById("downloadChartButton");
+      downloadChartButton.addEventListener("click", downloadChartSVG);
     </script>
   </body>
 </html>
