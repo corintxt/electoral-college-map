@@ -7,3 +7,5 @@ option to display total of Republican/Democrat votes and download as SVG.**
 * Fix state order and some that aren't tallied in total
 * Set up default start position of sure blue and red states
 * Expand northeast section for better visibility (?)
+
+Also: Talk to graphic designers!
