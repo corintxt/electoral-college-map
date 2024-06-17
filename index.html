@@ -18,7 +18,7 @@
       header {
         text-align: center;
         padding: 20px;
-        background-color: #000000;
+        background-color: #292929;
         width: 100%;
       }
 
@@ -134,8 +134,8 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
     <script>
-      const width = 960;
-      const height = 600;
+      const width = 800;
+      const height = 500;
       const circleRadius = 2;
       const circlesPerRow = 4;
 
@@ -190,70 +190,74 @@
             .text(d => `${d.properties.postal}`);
             // .text("BB")
 
-              const voteCircles = svg.selectAll(".vote-circle")
-                .data(states.features)
-                .enter()
-                .append("g")
-                .attr("class", "vote-circle")
-                .attr("state-name", d => d.properties.name)
-                .attr("transform", d => `translate(${path.centroid(d)})`);
+            const voteCircles = svg.selectAll(".vote-circle")
+              .data(states.features)
+              .enter()
+              .append("g")
+              .attr("class", "vote-circle")
+              .attr("state-name", d => d.properties.name)
+              .attr("transform", d => `translate(${path.centroid(d)})`);
 
-              voteCircles.selectAll(".vote-circle")
-                .data(d => {
-                  const votes = d.properties.electoral_votes;
-                  const positions = [];
-                  const circleSpacing = circleRadius * 2.5;
-                  let x = -circleSpacing * 2;
-                  let y = -circleSpacing * 2;
-                  let row = 0;
-                  let col = 0;
+            voteCircles.selectAll(".vote-circle")
+              .data(d => {
+                const votes = d.properties.electoral_votes;
+                const positions = [];
+                const circleSpacing = circleRadius * 2.5;
+                let x = -circleSpacing * 2;
+                let y = -circleSpacing * 2;
+                let row = 0;
+                let col = 0;
 
-                  for (let i = 0; i < votes; i++) {
-                    positions.push([x, y]);
-                    col++;
+                for (let i = 0; i < votes; i++) {
+                  positions.push([x, y]);
+                  col++;
 
-                    if (col === circlesPerRow) {
-                      col = 0;
-                      row++;
-                      x = -circleSpacing * 2;
-                      y += circleSpacing;
-                    } else {
-                      x += circleSpacing;
-                    }
+                  if (col === circlesPerRow) {
+                    col = 0;
+                    row++;
+                    x = -circleSpacing * 2;
+                    y += circleSpacing;
+                  } else {
+                    x += circleSpacing;
                   }
+                }
 
-                  return positions;
-                })
-                .enter()
-                .append("circle")
-                .attr("class", "vote-circle")
-                .attr("r", circleRadius)
-                .attr("cx", d => d[0])
-                .attr("cy", d => d[1]);
+                return positions;
+              })
+              .enter()
+              .append("circle")
+              .attr("class", "vote-circle")
+              .attr("r", circleRadius)
+              .attr("cx", d => d[0])
+              .attr("cy", d => d[1]);
 
-                    // Add mouseover and mouseout event listeners after voteCircles is defined
-                    statesPaths
-                        .on("mouseover", function(event, d) {
-                            const stateName = d.properties.name;
-                            d3.select(this).classed("highlighted", true);
-                            voteCircles.selectAll("circle")
-                            .classed("highlighted", function() {
-                                return d3.select(this.parentNode).attr("state-name") === stateName;
-                            });
-                        })
-                        .on("mouseout", function() {
-                            d3.select(this).classed("highlighted", false);
-                            voteCircles.selectAll("circle")
-                            .classed("highlighted", false);
-                        });
+              // Add mouseover and mouseout event listeners after voteCircles is defined
+              statesPaths
+                  .on("mouseover", function(event, d) {
+                      const stateName = d.properties.name;
+                      d3.select(this).classed("highlighted", true);
+                      voteCircles.selectAll("circle")
+                      .classed("highlighted", function() {
+                          return d3.select(this.parentNode).attr("state-name") === stateName;
+                      });
+                  })
+                  .on("mouseout", function() {
+                      d3.select(this).classed("highlighted", false);
+                      voteCircles.selectAll("circle")
+                      .classed("highlighted", false);
+                  });
 
             });
+
+          // Sort the states alphabetically by name
+          const sortedStates = states.features.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
+
           // Generate the state list with radio buttons
           const stateList = d3.select("#stateList");
           const demColor = "#467bf7"
           const repColor = "#ff7575"
 
-          states.features.forEach(state => {
+          sortedStates.forEach(state => {
             const stateName = state.properties.name;
             const stateRow = stateList.append("div").attr("class", "state-row");
             
