@@ -1,0 +1,212 @@
+
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #1a1a1a;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .header-content {
+    text-align: center;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  header p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.9;
+  }
+  
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff5f6d, #4ba4ff);
+    opacity: 0.6;
+    z-index: 0;
+    animation: gradientAnimation 5s ease infinite;
+  }
+  
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+        h1 {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 36px;
+          margin: 0;
+          color: white;
+        }
+  
+        #content {
+          display: flex;
+          width: 100%;
+        }
+  
+        .state {
+          fill: rgb(255, 255, 255);
+          stroke: rgb(213, 213, 213);
+          stroke-width: 1px;
+        }
+  
+        .state:hover {
+          fill: rgb(254, 251, 184);
+        }
+  
+        .state.highlighted {
+          fill: rgb(241, 241, 186);
+        }
+  
+        .vote-circle {
+          fill: rgb(0, 0, 0);
+          opacity: .7;
+          stroke: none;
+          pointer-events: none;
+        }
+  
+        .vote-circle.highlighted {
+          fill: rgb(190, 26, 255);
+        }
+  
+      .state-initials {
+          font-size: 10px;
+          font-family: Arial, Helvetica, sans-serif;
+          font-weight: bold;
+          text-anchor: bottom;
+          pointer-events: none;
+        }
+  
+        #stateList {
+        width: 200px;
+        padding-right: 20px;
+        box-sizing: border-box;
+      }
+  
+      #mapContainer {
+        flex: 1;
+      }
+  
+      .state-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 8px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+  
+      .radio-container {
+        display: flex;
+        align-items: center;
+      }
+  
+      .radio-container label {
+        /* margin-left: 5px; */
+        margin-right: 10px;
+        font-size: 8px;
+      }
+  
+      .radio-container input[type="radio"] {
+        transform: scale(0.8);
+      }
+  
+        #stateList {
+          width: 150px;
+          padding-right: 10px;
+          box-sizing: border-box;
+        }
+  
+        #buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    background-color: #949494;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #3d3d3d;
+  }
+  
+  label {
+    display: flex;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #1a1a1a;
+    cursor: pointer;
+  }
+  
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #1a1a1a;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #5f5e60;
+    border-color: #bdbdbd;
+  }
+  
+  input[type="checkbox"]:checked::before {
+    content: '\2713';
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  
+  
