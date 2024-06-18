@@ -110,6 +110,17 @@
         display: block;
         margin: 20px;
       }
+
+      .tooltip {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+      }
     </style>
   </head>
   <body>
@@ -237,24 +248,43 @@
               .attr("cx", d => d[0])
               .attr("cy", d => d[1]);
 
-              // Add mouseover and mouseout event listeners after voteCircles is defined
-              statesPaths
-                  .on("mouseover", function(event, d) {
-                      const stateName = d.properties.name;
-                      d3.select(this).classed("highlighted", true);
-                      voteCircles.selectAll("circle")
-                      .classed("highlighted", function() {
-                          return d3.select(this.parentNode).attr("state-name") === stateName;
-                      });
-                  })
-                  .on("mouseout", function() {
-                      d3.select(this).classed("highlighted", false);
-                      voteCircles.selectAll("circle")
-                      .classed("highlighted", false);
-                  });
+            // Create a tooltip element
+          const tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 1)
+            .style("position", "absolute")
+            .style("pointer-events", "none");
 
+          // Add mouseover and mouseout event listeners after voteCircles is defined
+          statesPaths
+            .on("mouseover", function(event, d) {
+              console.log("Mouseover:", d.properties.name);
+              console.log("Tooltip text:", d3.select(this).select("title").text());
+              const stateName = d.properties.name;
+              d3.select(this).classed("highlighted", true);
+              voteCircles.selectAll("circle")
+                .classed("highlighted", function() {
+                  return d3.select(this.parentNode).attr("state-name") === stateName;
+                });
+
+              // Show the tooltip
+              tooltip.html(d3.select(this).select("title").text())
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px")
+                .style("opacity", 1);
+            })
+
+            .on("mouseout", function() {
+              d3.select(this).classed("highlighted", false);
+              voteCircles.selectAll("circle")
+                .classed("highlighted", false);
+
+              // Hide the tooltip
+              tooltip.style("opacity", 0);
             });
-
+          });
+          
           // Function to sanitize state names for use in radio button IDs
           function sanitizeStateName(stateName) {
             return stateName.replace(/\s+/g, '-');
