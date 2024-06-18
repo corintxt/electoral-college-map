@@ -109,18 +109,10 @@
       #buttonContainer {
         display: block;
         margin: 20px;
+        font-family: Arial, Helvetica, sans-serif;
       }
 
-      .tooltip {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 5px;
-        border-radius: 4px;
-        font-size: 12px;
-        pointer-events: none;
-        opacity: 0;
-      }
+
     </style>
   </head>
   <body>
@@ -134,10 +126,12 @@
           <div id="buttonContainer">
             <button id="downloadMapButton">Download Map</button>
             <button id="downloadChartButton">Download Chart</button>
+            <label for="showElectoralCheckbox">
+              <input type="checkbox" id="showElectoralCheckbox" checked> Show Electoral College
+            </label>
           </div>
           <div id="barChart"></div>
           <div id="map"></div>
-          <!-- <svg width="960" height="600"></svg> -->
         </div>
       </div>
     </div>

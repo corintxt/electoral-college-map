@@ -39,6 +39,13 @@ d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
       }
   });
 
+// Add event listener to the checkbox
+const showElectoralCheckbox = d3.select("#showElectoralCheckbox");
+showElectoralCheckbox.on("change", function() {
+  const showElectoral = this.checked;
+  voteCircles.selectAll("circle").style("display", showElectoral ? null : "none");
+});
+  
 const statesPaths = svg.selectAll(".state")
     .data(states.features)
     .enter()
@@ -61,45 +68,45 @@ const statesPaths = svg.selectAll(".state")
     // .text("BB")
 
     const voteCircles = svg.selectAll(".vote-circle")
-    .data(states.features)
-    .enter()
-    .append("g")
-    .attr("class", "vote-circle")
-    .attr("state-name", d => d.properties.name)
-    .attr("transform", d => `translate(${path.centroid(d)})`);
+  .data(states.features)
+  .enter()
+  .append("g")
+  .attr("class", "vote-circle")
+  .attr("state-name", d => d.properties.name)
+  .attr("transform", d => `translate(${path.centroid(d)})`);
 
-    voteCircles.selectAll(".vote-circle")
-    .data(d => {
-        const votes = d.properties.electoral_votes;
-        const positions = [];
-        const circleSpacing = circleRadius * 2.5;
-        let x = -circleSpacing * 2;
-        let y = -circleSpacing * 2;
-        let row = 0;
-        let col = 0;
+voteCircles.selectAll(".vote-circle")
+  .data(d => {
+    const votes = d.properties.electoral_votes;
+    const positions = [];
+    const circleSpacing = circleRadius * 2.5;
+    let x = -circleSpacing * 2;
+    let y = -circleSpacing * 2;
+    let row = 0;
+    let col = 0;
 
-        for (let i = 0; i < votes; i++) {
-        positions.push([x, y]);
-        col++;
+    for (let i = 0; i < votes; i++) {
+      positions.push([x, y]);
+      col++;
 
-        if (col === circlesPerRow) {
-            col = 0;
-            row++;
-            x = -circleSpacing * 2;
-            y += circleSpacing;
-        } else {
-            x += circleSpacing;
-        }
-        }
+      if (col === circlesPerRow) {
+        col = 0;
+        row++;
+        x = -circleSpacing * 2;
+        y += circleSpacing;
+      } else {
+        x += circleSpacing;
+      }
+    }
 
-        return positions;
-    })
-    .enter()
-    .append("circle")
-    .attr("class", "vote-circle")
-    .attr("r", circleRadius)
-    .attr("cx", d => d[0])
-    .attr("cy", d => d[1]);
+    return positions;
+  })
+  .enter()
+  .append("circle")
+  .attr("class", "vote-circle")
+  .attr("r", circleRadius)
+  .attr("cx", d => d[0])
+  .attr("cy", d => d[1]);
 
       // Create a tooltip element
     // const tooltip = d3.select("body")
